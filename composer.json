@@ -1,0 +1,10 @@
+{
+    "autoload" : {
+        "require": {
+            "corneltek/pux": "~1.5"
+        },
+        "psr-4" : {
+            "Mvc\\": "src/Mvc/"
+        }
+    }
+}
