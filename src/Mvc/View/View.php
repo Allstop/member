@@ -6,13 +6,13 @@ class View{
 
     public $result = null;
     //*登入畫面
-    public static function login($file)
+    public static function login()
     {
         header("Content-Type:text/html; charset=utf-8");
         echo '<html>';
         echo '<head><meta charset="utf-8"/><title>Login</title></head>';
         echo '<body>';
-        echo '<form action="'.$file.'" method="post">';
+        echo '<form action="/check" method="post">';
         echo 'username：<input type="text" name="name"><br>';
         echo 'passoword：<input type="text" name="pwd"><br>';
         echo '<input type="submit" name="submit" value="Login"/><br><br>';
@@ -21,13 +21,13 @@ class View{
         echo '</form>';
     }
     //*新建會員資料
-    public static function newMember($file)
+    public static function newMember()
     {
         header("Content-Type:text/html; charset=utf-8");
         echo '<html>';
         echo '<head><meta charset="utf-8"/><title>NewMember</title></head>';
         echo '<body>';
-        echo '<form action="'.$file.'" method="post">';
+        echo '<form action="/check" method="post">';
         echo 'username：<input type="text" name="name"><br>';
         echo 'passoword：<input type="text" name="pwd"><br>';
         echo 'mobilephone：<input type="text" name="mph"><br>';
@@ -36,13 +36,13 @@ class View{
         echo '</form>';
     }
     //*會員資料
-    public function show($file, $result)
+    public function show($result)
     {
         header("Content-Type:text/html; charset=utf-8");
         echo '<html>';
         echo '<head><meta charset="utf-8"/><title>NewMember</title></head>';
         echo '<body>';
-        echo '<form action="'.$file.'" method="post">';
+        echo '<form action="/logout" method="post">';
         echo '<h2>會員資料：</h2>';
         foreach ($result as $row) {
             echo '<br>id:'.$row["id"];
@@ -55,9 +55,12 @@ class View{
         echo '</form>';
     }
     //*登出
-    public static function showoutput()
+    public static function logout()
     {
         header("Content-Type:text/html; charset=utf-8");
+        echo '<body>';
+        echo '<form action="/" method="post">';
         echo "<h2 style='color:blue'>您已登出！謝謝光臨!</h2>";
+        echo '</form>';
     }
 }

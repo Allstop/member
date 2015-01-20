@@ -1,12 +1,16 @@
 <?php
 // 自動載入類別
+
 require 'vendor/autoload.php';
 
-// 執行對應的動作
-$host = '127.0.0.1';
-$dbname = 'member';
-$user = 'root';
-$pwd = '1234';
+use Pux\Executor;
 
-$Controller = new Mvc\Controller\Controller($host, $dbname, $user, $pwd);
+//pux
+$mux = require "router/mux.php";
+$route = $mux->dispatch($_SERVER['DOCUMENT_URI']);
+echo Executor::execute($route);
+
+/*
+$Controller = new Mvc\Controller\Controller();
 $Controller->run();
+*/

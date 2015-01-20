@@ -8,10 +8,10 @@ class Model{
 
     protected $status = false;
 
-    public function __construct($servername, $dbname, $username, $password)
+    public function __construct()
     {
         try {
-            $conn = new \PDO('mysql:host='.$servername.';dbname='.$dbname, $username, $password);
+            $conn = new \PDO('mysql:host=127.0.0.1;dbname=member', 'root', '1234');
             //*錯誤處理,方式為拋出異常
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             //* 轉型utf8
@@ -65,7 +65,6 @@ class Model{
             		where username='".$_POST['name']."' and password='".$_POST['pwd']."' ");
             if ($sql->execute()) {
                 $this->memberlist=$sql;
-                //var_dump($this->memberlist);
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
             }else{
                 return 'error in lists!';
