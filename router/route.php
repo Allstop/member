@@ -12,12 +12,10 @@ use Pux\Mux;
 $mux = new Mux;
 
 $mux->any('/', ['Mvc\Controller\Controller', 'run']);
-//*登入
-$mux->any('/login', ['Mvc\Controller\Controller', 'login']);
 //*檢查
 $mux->post('/check', ['Mvc\Controller\Controller', 'Check']);
 //*會員資料
-$mux->post('/userData', ['Mvc\MController\Controller', 'userData']);
+$mux->post('/userData', ['Mvc\Controller\Controller', 'userData']);
 //*建立會員
 $mux->post('/newMember', ['Mvc\Controller\Controller', 'newMember']);
 //*登出

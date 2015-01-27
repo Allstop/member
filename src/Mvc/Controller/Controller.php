@@ -35,6 +35,7 @@ class Controller
                     $this->userData();
                     echo "<h2 style='color:blue'>登入成功!</h2>";
                 } elseif ($this->Model->loginCheck() == 'fail') {
+                    var_dump($this->Model->loginCheck());
                     $this->login();
                     echo "<h2 style='color:red'>尚未建立,查無符合資料!</h2>";
                 } else {
@@ -42,21 +43,22 @@ class Controller
                     echo "<h2 style='color:red'>帳號或密碼輸入錯誤!</h2>";
                 }
                 break;
-            case '申請會員':
-                $this->newMember();
-                break;
             case '送出':
-                if ($this->Model->loginCheck() !== 'success' && $this->Model->loginCheck() !== 'repeatNum') {
-                    $this->Model->create();
-                    $this->login();;
-                    echo "<h2>註冊成功,請重新登入!</h2>";
+                //var_dump($this->Model->loginCheck());
+                if ($this->Model->loginCheck() == 'null' ||
+                    $this->Model->loginCheck() == 'fail') {
+                    if ($this->Model->loginCheck() == 'null') {
+                        $this->newMember();
+                        echo "<h2>註冊失敗,資料不齊全,請輸入帳號密碼!</h2>";
+                    } else {
+                        $this->Model->create();
+                        $this->login();
+                        echo "<h2>註冊成功,請重新登入!</h2>";
+                    }
                 } else {
                     $this->newMember();
                     echo "<h2>註冊失敗,資料重複,請重新輸入!</h2>";
                 }
-                break;
-            case '登出':
-                $this->logout();
                 break;
         }
     }
@@ -73,46 +75,6 @@ class Controller
     public function logout(){
         View::login('index.php');
         View::logout('index.php');
-    }
-    // 預設的列表功能
-    // 等同於原來的 index.php
-    private function index()
-    {
-        if (!isset($_POST['submit'])) {
-            View::login('index.php');
-        } else {
-            switch ($_POST['submit']) {
-                case 'Login':
-                    if ($this->Model->loginCheck() == 'success') {
-                        $result = $this->Model->lists();
-                        View::show($result);
-                        echo "<h2 style='color:blue'>登入成功!</h2>";
-                    } elseif ($this->Model->loginCheck() == 'fail') {
-                        View::login('index.php');
-                        echo "<h2 style='color:red'>尚未建立,查無符合資料!</h2>";
-                    } else {
-                        View::login('index.php');
-                        echo "<h2 style='color:red'>帳號或密碼輸入錯誤!</h2>";
-                    }
-                    break;
-                case '申請會員':
-                    View::newMember('index.php');
-                    break;
-                case '送出':
-                    if ($this->Model->loginCheck() !== 'success' && $this->Model->loginCheck() !== 'repeatNum') {
-                        $this->Model->create();
-                        View::login('index.php');
-                        echo "<h2>註冊成功,請重新登入!</h2>";
-                    } else {
-                        View::newMember('index.php');
-                        echo "<h2>註冊失敗,資料重複,請重新輸入!</h2>";
-                    }
-                    break;
-                case '登出':
-                    View::logout('index.php');
-                    break;
-            }
-        }
     }
     // 解構函式
     public function __destruct()

@@ -21,7 +21,7 @@
       1 => '/userData',
       2 => 
       array (
-        0 => 'Mvc\\MController\\Controller',
+        0 => 'Mvc\\Controller\\Controller',
         1 => 'userData',
       ),
       3 => 

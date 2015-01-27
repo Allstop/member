@@ -30,16 +30,16 @@ class Model{
             return 'error in create!';
         }
         try{
-            if (!isset($_POST["name"])) {
-                return 'noName！';
-            } elseif (!isset($_POST["pwd"])) {
-                return 'noPwd！';
-            } else {
+            foreach ($_POST as $key => $value)
+            {
+                $_POST[$key] = trim($value);
+            }
+            if ($_POST['name'] != null && $_POST['pwd'] != null ) {
                 $this->memberdata = array();
-                $_name = trim($_POST ["name"]);
-                $_password = trim($_POST ["pwd"]);
-                $_mobilephone = trim($_POST ["mph"]);
-                $_memo = trim($_POST ["memo"]);
+                $_name = $_POST ["name"];
+                $_password = $_POST ["pwd"];
+                $_mobilephone = $_POST ["mph"];
+                $_memo = $_POST ["memo"];
                 $sql = self::$db->prepare("INSERT INTO information (username, password, mobilephone, memo)
                 VALUES (:name ,:password, :mobilephone, :memo)");
                 $sql->bindvalue (':name', $_name);
@@ -48,8 +48,9 @@ class Model{
                 $sql->bindvalue (':memo', $_memo);
                 $this->memberdata = $sql;
                 return ($sql->execute()) ? '成功' : '失敗';
+            } else {
+                return 'null';
             }
-
         }catch(PDOException $e){
             return 'error in create!';
         }
@@ -60,11 +61,11 @@ class Model{
             return 'error';
         }
         try {
-            $this->memberlist = array();
+            $this->memberList = array();
             $sql =  self::$db->prepare("SELECT * FROM information
-            		where username='".$_POST['name']."' and password='".$_POST['pwd']."' ");
+                where username='".$_POST['name']."' and password='".$_POST['pwd']."' ");
             if ($sql->execute()) {
-                $this->memberlist=$sql;
+                $this->memberList=$sql;
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
             }else{
                 return 'error in lists!';
@@ -75,22 +76,24 @@ class Model{
     }
     //*檢查登入資料是否已存在
     public function loginCheck(){
-        $sql1 = self::$db->query("SELECT id FROM information
-        where username='".$_POST['name']."' and password='".$_POST['pwd']."' ");
-        $sql2 = self::$db->query("SELECT id FROM information
-        where username='".$_POST['name']."' ");
-        $sql3 = self::$db->query("SELECT id FROM information
-        where password='".$_POST['pwd']."' ");
-
-        if ($sql1->fetch()) {
-            return 'success';
-        } elseif ($sql2->fetch()) {
-            return 'repeatNum';
-        } elseif ($sql3->fetch()) {
-            return 'repeatPwd';
-        } else {
-            return 'fail';
+        foreach ($_POST as $key => $value)
+        {
+            $_POST[$key] = trim($value);
         }
-
+        $lcName = $_POST["name"];
+        $lcPwd = md5($_POST["pwd"]);
+        $sql = self::$db->query("SELECT username FROM information
+        where password='".$lcPwd."' ");
+        if ($sql->fetch()) {
+            session_start();
+            $_SESSION["admin"] = true;
+            return 'success';
+        } else {
+            if (empty($_POST['name']) == true || empty($_POST['pwd']) == true) {
+                return 'null';
+            } else {
+                return 'fail';
+            }
+        }
     }
 }
