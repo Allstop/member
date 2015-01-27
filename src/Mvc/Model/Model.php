@@ -81,15 +81,19 @@ class Model{
             $_POST[$key] = trim($value);
         }
         $lcName = $_POST["name"];
-        $lcPwd = md5($_POST["pwd"]);
-        $sql = self::$db->query("SELECT username FROM information
+        $lcPwd = ($_POST["pwd"]);
+        $sql1 = self::$db->query("SELECT username FROM information
+        where username='".$lcName."' ");
+        $sql2 = self::$db->query("SELECT username FROM information
         where password='".$lcPwd."' ");
-        if ($sql->fetch()) {
+        if ($sql2->fetch()) {
             session_start();
-            $_SESSION["admin"] = true;
-            return 'success';
-        } else {
-            if (empty($_POST['name']) == true || empty($_POST['pwd']) == true) {
+            $_SESSION["status"] = true;
+            return $_SESSION["status"];
+        } elseif ($sql1->fetch()) {
+            return 'failPwd';
+        }  else {
+            if (empty($lcName) == true || empty($lcPwd) == true) {
                 return 'null';
             } else {
                 return 'fail';

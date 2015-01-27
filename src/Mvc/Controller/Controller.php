@@ -31,20 +31,22 @@ class Controller
     public function check(){
         switch ($_POST['submit']) {
             case 'Login':
-                if ($this->Model->loginCheck() == 'success') {
+                var_dump($this->Model->loginCheck());
+                if ($this->Model->loginCheck() == 'true') {
                     $this->userData();
                     echo "<h2 style='color:blue'>登入成功!</h2>";
+                } elseif ($this->Model->loginCheck() == 'failPwd') {
+                    $this->login();
+                    echo "<h2 style='color:red'>密碼錯誤,請重新輸入資料!</h2>";
                 } elseif ($this->Model->loginCheck() == 'fail') {
-                    var_dump($this->Model->loginCheck());
                     $this->login();
                     echo "<h2 style='color:red'>尚未建立,查無符合資料!</h2>";
                 } else {
                     $this->login();
-                    echo "<h2 style='color:red'>帳號或密碼輸入錯誤!</h2>";
+                    echo "<h2 style='color:red'>帳號或密碼未輸入!</h2>";
                 }
                 break;
             case '送出':
-                //var_dump($this->Model->loginCheck());
                 if ($this->Model->loginCheck() == 'null' ||
                     $this->Model->loginCheck() == 'fail') {
                     if ($this->Model->loginCheck() == 'null') {
