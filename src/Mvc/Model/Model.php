@@ -80,24 +80,13 @@ class Model{
         {
             $_POST[$key] = trim($value);
         }
-        $lcName = $_POST["name"];
         $lcPwd = ($_POST["pwd"]);
-        $sql1 = self::$db->query("SELECT username FROM information
-        where username='".$lcName."' ");
-        $sql2 = self::$db->query("SELECT username FROM information
-        where password='".$lcPwd."' ");
-        if ($sql2->fetch()) {
-            session_start();
-            $_SESSION["status"] = true;
-            return $_SESSION["status"];
-        } elseif ($sql1->fetch()) {
-            return 'failPwd';
-        }  else {
-            if (empty($lcName) == true || empty($lcPwd) == true) {
-                return 'null';
-            } else {
-                return 'fail';
-            }
+        $sql = self::$db->query("SELECT username FROM information
+        where password='".$_POST["pwd"]."' ");
+        if ($sql->fetch()) {
+            return $lcPwd;
+        } else {
+            return false;
         }
     }
 }

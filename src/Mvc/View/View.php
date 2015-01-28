@@ -8,25 +8,23 @@ class View{
     //*登入畫面
     public static function login()
     {
-        header("Content-Type:text/html; charset=utf-8");
-        $login='
+?>
         <html>
-        <head><meta charset="utf-8"/><title>Login</title></head>
-        <body>
-        <form action="/check" method="post">
-        username：<input type="text" name="name"><br>
-        passoword：<input type="text" name="pwd"><br>
-        <input type="submit" name="submit" value="Login" /><br><br>
-        <input type="submit" name="submit" value="申請會員" formaction="newMember"/>
-        <input type="submit" name="submit" value="忘記密碼" />';
-        echo $login;
-
+            <head><meta charset="utf-8"/><title>Login</title></head>
+                <body>
+                    <form action="/check" method="post">
+                        username：<input type="text" name="name"><br>
+                        passoword：<input type="text" name="pwd"><br>
+                        <input type="submit" name="submit" value="Login" /><br><br>
+                        <input type="submit" name="submit" value="申請會員" formaction="newMember"/>
+                        <input type="submit" name="submit" value="忘記密碼" />';
+<?php
     }
     //*新建會員資料
     public static function newMember()
     {
-        header("Content-Type:text/html; charset=utf-8");
-        $newMember='<html>
+?>
+        <html>
         <head><meta charset="utf-8"/><title>NewMember</title></head>
         <body>
         <form action="/check" method="post">
@@ -37,7 +35,7 @@ class View{
         memo：<input type="text" name="memo"><br>
         <input type="submit" name="submit" value="送出"/>
         </form>';
-        echo $newMember;
+<?php
     }
     //*會員資料
     public function show($result)
