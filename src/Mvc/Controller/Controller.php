@@ -36,6 +36,7 @@ class Controller
     public function check(){
         switch ($_POST['submit']) {
             case 'Login':
+                var_dump($this->Model->loginCheck());
                 if ($this->Model->loginCheck()) {
                     $this->userData();
                     $_SESSION['name'] = $this->Model->loginCheck();
@@ -46,9 +47,12 @@ class Controller
                 }
                 break;
             case '送出':
-                if ($this->Model->loginCheck()) {
+                if ($_SESSION['name']) {
                     $this->newMember();
-                    echo "<h2>註冊失敗,資料不齊全,請輸入帳號密碼!</h2>";
+                    echo "<h2>註冊失敗,資料重複,請重新輸入!</h2>";
+                } elseif (empty($_POST['name']) == true || empty($_POST['pwd']) == true) {
+                    $this->newMember();
+                    echo "<h2>註冊失敗,帳號密碼請勿空白,請重新輸入!</h2>";
                 } else {
                     $this->Model->create();
                     $this->login();
@@ -68,6 +72,7 @@ class Controller
     }
     //*登出
     public function logout(){
+        unset($_SESSION['name']);
         View::login('index.php');
         View::logout('index.php');
     }

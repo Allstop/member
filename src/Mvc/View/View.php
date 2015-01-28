@@ -17,7 +17,7 @@ class View{
                         passoword：<input type="text" name="pwd"><br>
                         <input type="submit" name="submit" value="Login" /><br><br>
                         <input type="submit" name="submit" value="申請會員" formaction="newMember"/>
-                        <input type="submit" name="submit" value="忘記密碼" />';
+                        <input type="submit" name="submit" value="忘記密碼" />
 <?php
     }
     //*新建會員資料
@@ -34,7 +34,7 @@ class View{
         mobilephone：<input type="text" name="mph"><br>
         memo：<input type="text" name="memo"><br>
         <input type="submit" name="submit" value="送出"/>
-        </form>';
+        </form>
 <?php
     }
     //*會員資料
