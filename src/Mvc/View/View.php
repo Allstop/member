@@ -29,10 +29,10 @@ class View{
         <body>
         <form action="/check" method="post">
         (*)必填欄位<br><br>
-        username*：<input type="text" name="name"><br>
-        passoword*：<input type="text" name="pwd"><br>
-        mobilephone：<input type="text" name="mph"><br>
-        memo：<input type="text" name="memo"><br>
+        username*：<input type="text" name="ctName"><br>
+        passoword*：<input type="text" name="ctPwd"><br>
+        mobilephone：<input type="text" name="ctMph"><br>
+        memo：<input type="text" name="ctMemo"><br>
         <input type="submit" name="submit" value="送出"/>
         </form>
 <?php

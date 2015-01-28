@@ -24,22 +24,20 @@ class Model{
         }
     }
     //*寫入資料
-    public function create()
+    public function create($ctName,$ctPwd,$ctMph,$ctMemo)
     {
         if ($this->status !== true) {
             return 'error in create!';
         }
         try{
-            foreach ($_POST as $key => $value)
-            {
-                $_POST[$key] = trim($value);
-            }
-            if ($_POST['name'] != null && $_POST['pwd'] != null ) {
+
+
+            if ($ctName != null && $ctPwd != null ) {
                 $this->memberdata = array();
-                $_name = $_POST ["name"];
-                $_password = $_POST ["pwd"];
-                $_mobilephone = $_POST ["mph"];
-                $_memo = $_POST ["memo"];
+                $_name = $ctName;
+                $_password = $ctPwd;
+                $_mobilephone = $ctMph;
+                $_memo = $ctMemo;
                 $sql = self::$db->prepare("INSERT INTO information (username, password, mobilephone, memo)
                 VALUES (:name ,:password, :mobilephone, :memo)");
                 $sql->bindvalue (':name', $_name);
@@ -56,14 +54,14 @@ class Model{
         }
     }
     //*會員詳細資料
-    public function lists(){
+    public function lists($lsName){
         if ($this->status !== true) {
             return 'error';
         }
         try {
             $this->memberList = array();
             $sql =  self::$db->prepare("SELECT * FROM information
-                where username='".$_POST['name']."' and password='".$_POST['pwd']."' ");
+                where username='".$lsName."'");
             if ($sql->execute()) {
                 $this->memberList=$sql;
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
@@ -75,16 +73,11 @@ class Model{
         }
     }
     //*檢查登入資料是否已存在
-    public function loginCheck(){
-        foreach ($_POST as $key => $value)
-        {
-            $_POST[$key] = trim($value);
-        }
-        $lcPwd = ($_POST["pwd"]);
+    public function loginCheck($lgName,$lgPwd){
         $sql = self::$db->query("SELECT username FROM information
-        where password='".$_POST["pwd"]."' ");
+                where password='".$lgPwd."' ");
         if ($sql->fetch()) {
-            return $lcPwd;
+         return $lgName;
         } else {
             return false;
         }
