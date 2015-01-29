@@ -30,19 +30,17 @@ class Model{
             return 'error in create!';
         }
         try{
-
-
             if ($ctName != null && $ctPwd != null ) {
                 $this->memberdata = array();
                 $_name = $ctName;
                 $_password = $ctPwd;
-                $_mobilephone = $ctMph;
+                $_mobilePhone = $ctMph;
                 $_memo = $ctMemo;
                 $sql = self::$db->prepare("INSERT INTO information (username, password, mobilephone, memo)
-                VALUES (:name ,:password, :mobilephone, :memo)");
+                VALUES (:name ,:password, :mobilePhone, :memo)");
                 $sql->bindvalue (':name', $_name);
                 $sql->bindvalue (':password', $_password);
-                $sql->bindvalue (':mobilephone', $_mobilephone);
+                $sql->bindvalue (':mobilePhone', $_mobilePhone);
                 $sql->bindvalue (':memo', $_memo);
                 $this->memberdata = $sql;
                 return ($sql->execute()) ? '成功' : '失敗';
@@ -60,8 +58,7 @@ class Model{
         }
         try {
             $this->memberList = array();
-            $sql =  self::$db->prepare("SELECT * FROM information
-                where username='".$lsName."'");
+            $sql = self::$db->prepare("SELECT * FROM information where username='".$lsName."'");
             if ($sql->execute()) {
                 $this->memberList=$sql;
                 return $sql->fetchAll(\PDO::FETCH_ASSOC);
@@ -69,15 +66,25 @@ class Model{
                 return 'error in lists!';
             }
         }catch(\PDOException $e){
-
+            return 'error in lists!';
         }
     }
     //*檢查登入資料是否已存在
-    public function loginCheck($lgName,$lgPwd){
+    public function loginCheck($lgName, $lgPwd){
         $sql = self::$db->query("SELECT username FROM information
-                where password='".$lgPwd."' ");
+        where username='".$lgName."' and password='".$lgPwd."' ");
         if ($sql->fetch()) {
-         return $lgName;
+            return $lgName;
+        } else {
+            return false;
+        }
+    }
+    //*檢查建立資料是否已存在
+    public function createCheck($ctName){
+        $sql = self::$db->query("SELECT username FROM information
+        where username='".$ctName."'");
+        if ($sql->fetch()) {
+            return $ctName;
         } else {
             return false;
         }

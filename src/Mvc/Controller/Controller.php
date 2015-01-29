@@ -1,5 +1,4 @@
 <?php
-
 namespace Mvc\Controller;
 
 use Mvc\Model\Model;
@@ -18,6 +17,7 @@ class Controller
     {
         $this->Model = new Model();
     }
+    //取得POST值
     public function getPost()
     {
         foreach ($_POST as $key => $value)
@@ -25,22 +25,28 @@ class Controller
             $_POST[$key] = trim($value);
         }
         $memData = array();
-        if (isset($_POST['name'])) {
+        if (isset($_POST['name']))
+        {
             $memData['name'] = $_POST['name'];
         }
-        if (isset($_POST['pwd'])) {
+        if (isset($_POST['pwd']))
+        {
             $memData['pwd'] = $_POST['pwd'];
         }
-        if (isset($_POST['ctName'])) {
+        if (isset($_POST['ctName']))
+        {
             $memData['ctName'] = $_POST['ctName'];
         }
-        if (isset($_POST['ctPwd'])) {
+        if (isset($_POST['ctPwd']))
+        {
             $memData['ctPwd'] = $_POST['ctPwd'];
         }
-        if (isset($_POST['ctMph'])) {
+        if (isset($_POST['ctMph']))
+        {
             $memData['ctMph'] = $_POST['ctMph'];
         }
-        if (isset($_POST['ctMemo'])) {
+        if (isset($_POST['ctMemo']))
+        {
             $memData['ctMemo'] = $_POST['ctMemo'];
         }
         return $memData;
@@ -52,16 +58,15 @@ class Controller
     }
     //*登入
     private function login(){
-        session_start();
         View::login('index.php');
     }
     //*檢查
     public function check(){
         switch ($_POST['submit']) {
             case 'Login':
-                $lgName = $this->getPost()[name];
-                $lgPwd = $this->getPost()[pwd];
-                if ($this->Model->loginCheck($lgName,$lgPwd)) {
+                $lgName = $this->getPost()['name'];
+                $lgPwd = $this->getPost()['pwd'];
+                if ($this->Model->loginCheck($lgName, $lgPwd)) {
                     session_start();
                     $_SESSION["name"]=$lgName;
                     $this->userData();
@@ -72,17 +77,17 @@ class Controller
                 }
                 break;
             case '送出':
-                if ($_SESSION['name']) {
+                $ctName = $this->getPost()['ctName'];
+                $ctPwd = $this->getPost()['ctPwd'];
+                $ctMph = $this->getPost()['ctMph'];
+                $ctMemo = $this->getPost()['ctMemo'];
+                if ($this->Model->createCheck($ctName)) {
                     $this->newMember();
                     echo "<h2>註冊失敗,資料重複,請重新輸入!</h2>";
-                } elseif (empty($this->getPost()[ctName]) == true || empty($this->getPost()[ctPwd]) == true) {
+                } elseif (empty($ctName) == true || empty($ctPwd) == true) {
                     $this->newMember();
                     echo "<h2>註冊失敗,帳號密碼請勿空白,請重新輸入!</h2>";
                 } else {
-                    $ctName = $this->getPost()[ctName];
-                    $ctPwd = $this->getPost()[ctPwd];
-                    $ctMph = $this->getPost()[ctMph];
-                    $ctMemo = $this->getPost()[ctMemo];
                     $this->Model->create($ctName,$ctPwd,$ctMph,$ctMemo);
                     $this->login();
                     echo "<h2>註冊成功,請重新登入!</h2>";
@@ -103,7 +108,6 @@ class Controller
     }
     //*登出
     public function logout(){
-       // session_start();
         unset($_SESSION['name']);
         View::login('index.php');
         View::logout('index.php');
