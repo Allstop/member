@@ -12,6 +12,8 @@ use Pux\Mux;
 $mux = new Mux;
 
 $mux->any('/', ['Mvc\Controller\Controller', 'run']);
+//*登入
+$mux->post('/login', ['Mvc\Controller\Controller', 'login']);
 //*檢查
 $mux->post('/check', ['Mvc\Controller\Controller', 'Check']);
 //*會員資料

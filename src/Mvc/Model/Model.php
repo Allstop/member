@@ -24,18 +24,18 @@ class Model{
         }
     }
     //*寫入資料
-    public function create($ctName,$ctPwd,$ctMph,$ctMemo)
+    public function create($gtPost)
     {
         if ($this->status !== true) {
             return 'error in create!';
         }
         try{
-            if ($ctName != null && $ctPwd != null ) {
+            if ($gtPost['ctName'] != null && $gtPost['ctPwd'] != null ) {
                 $this->memberdata = array();
-                $_name = $ctName;
-                $_password = $ctPwd;
-                $_mobilePhone = $ctMph;
-                $_memo = $ctMemo;
+                $_name = $gtPost['ctName'];
+                $_password = $gtPost['ctPwd'];
+                $_mobilePhone = $gtPost['ctMph'];
+                $_memo = $gtPost['ctMemo'];
                 $sql = self::$db->prepare("INSERT INTO information (username, password, mobilephone, memo)
                 VALUES (:name ,:password, :mobilePhone, :memo)");
                 $sql->bindvalue (':name', $_name);
@@ -70,21 +70,22 @@ class Model{
         }
     }
     //*檢查登入資料是否已存在
-    public function loginCheck($lgName, $lgPwd){
+    public function loginCheck($gtPost){
         $sql = self::$db->query("SELECT username FROM information
-        where username='".$lgName."' and password='".$lgPwd."' ");
+        where username='".$gtPost['name']."' and password='".$gtPost['pwd']."' ");
         if ($sql->fetch()) {
-            return $lgName;
+
+            return $gtPost['name'];
         } else {
             return false;
         }
     }
     //*檢查建立資料是否已存在
-    public function createCheck($ctName){
+    public function createCheck($gtPost){
         $sql = self::$db->query("SELECT username FROM information
-        where username='".$ctName."'");
+        where username='".$gtPost['ctName']."'");
         if ($sql->fetch()) {
-            return $ctName;
+            return $gtPost['ctName'];
         } else {
             return false;
         }
