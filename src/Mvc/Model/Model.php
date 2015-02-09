@@ -5,7 +5,7 @@ namespace Mvc\Model;
 class Model{
 
     private static $db = null;
-
+    
     protected $status = false;
 
     public function __construct()
